@@ -1,0 +1,69 @@
+# Reusable Node/pnpm quality gate. Callable from any builtbydoug repo via
+# `workflow_call` — this is how CI is *shared* (workflow files can't be
+# `extends`-ed like configs). Pin the call to a dev-config tag.
+#
+# Caller example (.github/workflows/ci.yml):
+#
+#   jobs:
+#     quality:
+#       uses: builtbydoug/dev-config/.github/workflows/reusable-node-quality.yml@v0.1.0
+#       with:
+#         node-version: '24'
+#
+# All third-party actions are pinned to a full commit SHA with a `# vX.Y.Z`
+# comment, per the action-pinning policy (scripts/check-action-pins.sh).
+
+name: Node quality (reusable)
+
+on:
+  workflow_call:
+    inputs:
+      node-version:
+        description: Node.js version to use.
+        required: false
+        type: string
+        default: '24'
+      run-build:
+        description: Whether to run `pnpm run build`.
+        required: false
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@0e279bb959325dab635dd2c09392533439d90093 # v6.0.8
+
+      - name: Setup Node
+        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.0.0
+        with:
+          node-version: ${{ inputs.node-version }}
+          cache: pnpm
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      - name: Format check
+        run: pnpm run format:check
+
+      - name: Lint
+        run: pnpm run lint
+
+      - name: Typecheck
+        run: pnpm run typecheck
+
+      - name: Test
+        run: pnpm run test
+
+      - name: Build
+        if: ${{ inputs.run-build }}
+        run: pnpm run build

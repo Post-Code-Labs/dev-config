@@ -1,0 +1,28 @@
+{
+  "_comment": "Pinned toolchain versions shared across builtbydoug repos. Keep each repo's devDependencies aligned to these so a shared config behaves identically everywhere. Bump here, then bump the repos.",
+  "node": "24",
+  "pnpm": "10.33.0",
+  "python": "3.14",
+  "npm": {
+    "typescript": "6.0.3",
+    "prettier": "3.8.3",
+    "eslint": "9.39.4",
+    "typescript-eslint": "8.59.4",
+    "eslint-config-next": "16.2.6",
+    "eslint-config-prettier": "10.1.8",
+    "eslint-plugin-sonarjs": "4.0.3",
+    "eslint-plugin-import": "2.32.0",
+    "@vitest/eslint-plugin": "1.6.18",
+    "vitest": "4.1.7",
+    "@vitest/coverage-v8": "4.1.7",
+    "lefthook": "2.1.9",
+    "knip": "6.15.0",
+    "jscpd": "4.2.4"
+  },
+  "python_dev": {
+    "ruff": ">=0.6",
+    "mypy": ">=1.11",
+    "pytest": ">=8.0",
+    "vulture": ">=2.16"
+  }
+}

@@ -1,0 +1,28 @@
+# Shared lefthook config for builtbydoug repos (https://lefthook.dev).
+#
+# Copy to <repo>/lefthook.yml via scripts/sync-config.sh. Installs on
+# `pnpm install` through each repo's `prepare: lefthook install` script.
+#
+# These hooks are a fast local feedback accelerator on top of CI, not a gate:
+# they run on STAGED files only, stay in the "seconds" range, and are bypassable
+# (`git commit --no-verify`). CI remains the authoritative check. Whole-repo
+# checks that can't be scoped to staged files (knip, jscpd, tests) belong in CI.
+#
+# pnpm-based (all repos standardise on pnpm). lefthook's binary install must be
+# allowed in pnpm-workspace.yaml `allowBuilds` (lefthook: true).
+
+pre-commit:
+  parallel: true
+  jobs:
+    - name: prettier
+      glob: '*.{ts,tsx,js,jsx,mjs,cjs,json,md,mdx,css,yml,yaml}'
+      run: pnpm exec prettier --check {staged_files}
+
+    - name: eslint
+      glob: '*.{ts,tsx,js,jsx,mjs,cjs}'
+      run: pnpm exec eslint --max-warnings=0 {staged_files}
+
+pre-push:
+  jobs:
+    - name: typecheck
+      run: pnpm run typecheck

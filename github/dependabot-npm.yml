@@ -1,0 +1,24 @@
+# Dependabot baseline for a pure-TS/JS repo. Copy to .github/dependabot.yml.
+# Weekly, grouped minor+patch (majors stay ungrouped for individual review).
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    groups:
+      github-actions:
+        update-types:
+          - minor
+          - patch
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    groups:
+      minor-and-patch:
+        update-types:
+          - minor
+          - patch

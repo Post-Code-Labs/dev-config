@@ -1,0 +1,32 @@
+# PR title format gate. Copy to .github/workflows/pr-title.yml in repos that
+# auto-generate release notes from PR titles (e.g. postcode). The allowed type
+# list matches the release tooling: chore | deprecate | feat | fix | release.
+name: PR Title
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize, reopened]
+
+permissions:
+  contents: read
+  pull-requests: read
+
+concurrency:
+  group: pr-title-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    name: Validate PR title format
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check PR title against commit format
+        env:
+          PR_TITLE: ${{ github.event.pull_request.title }}
+        run: |
+          if ! printf '%s' "$PR_TITLE" | grep -Eq '^(chore|deprecate|feat|fix|release)(!)?: .+'; then
+            echo "::error::PR title \"$PR_TITLE\" must match \"<type>: <description>\" (use \"<type>!: \" for breaking changes). Allowed types: chore | deprecate | feat | fix | release."
+            exit 1
+          fi
+          echo "PR title OK: $PR_TITLE"

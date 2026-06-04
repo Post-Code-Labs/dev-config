@@ -1,0 +1,51 @@
+{
+  "name": "@builtbydoug/dev-config",
+  "version": "0.1.0",
+  "description": "Shared baseline tooling (lint, format, typecheck, CI, AGENTS) for builtbydoug repos",
+  "license": "UNLICENSED",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@10.33.0",
+  "engines": {
+    "node": ">=24"
+  },
+  "bin": {
+    "dev-config-sync": "scripts/sync-config.sh"
+  },
+  "exports": {
+    "./prettier": "./prettier/index.json",
+    "./typescript/tsconfig.base.json": "./typescript/tsconfig.base.json",
+    "./typescript/tsconfig.react.json": "./typescript/tsconfig.react.json",
+    "./eslint/base": "./eslint/base.mjs",
+    "./eslint/react": "./eslint/react.mjs",
+    "./python/ruff.toml": "./python/ruff.toml",
+    "./python/mypy.ini": "./python/mypy.ini",
+    "./versions.json": "./versions.json"
+  },
+  "files": [
+    "prettier",
+    "typescript",
+    "eslint",
+    "python",
+    "lefthook",
+    "github",
+    "scripts",
+    "agents",
+    "versions.json"
+  ],
+  "peerDependencies": {
+    "eslint": ">=9.39.0",
+    "eslint-config-next": ">=16.2.0",
+    "eslint-config-prettier": ">=10.1.0",
+    "eslint-plugin-import": ">=2.32.0",
+    "eslint-plugin-sonarjs": ">=4.0.0",
+    "prettier": ">=3.8.0",
+    "typescript": ">=6.0.0",
+    "typescript-eslint": ">=8.39.0"
+  },
+  "peerDependenciesMeta": {
+    "eslint-config-next": {
+      "optional": true
+    }
+  }
+}
