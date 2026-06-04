@@ -1,0 +1,18 @@
+# Shared ruff baseline for consuming Python workspaces.
+#
+# Consume by extending from the installed package (preferred), or copy once into
+# a new repo if a node_modules path is awkward for the Python tree:
+#
+#   # python/ruff.toml  (or [tool.ruff] section pointing at this file)
+#   extend = "../node_modules/@builtbydoug/dev-config/python/ruff.toml"
+#
+# Repo-specific bits (target-version, src layout, per-package excludes) stay
+# local and override these defaults.
+
+[lint]
+# E/F pyflakes+pycodestyle, I import sorting, UP pyupgrade, B bugbear,
+# C901 mccabe cyclomatic complexity (the "tangled function" guardrail).
+select = ["E", "F", "I", "UP", "B", "C901"]
+
+[lint.mccabe]
+max-complexity = 10

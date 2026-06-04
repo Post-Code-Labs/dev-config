@@ -1,0 +1,19 @@
+{
+  "_comment": "Pinned versions of exactly the toolchain the shipped configs depend on. A config only behaves identically across consumers if the tool version behind it is identical, so consumers align their devDependencies to these. Pin only what these configs require — nothing whose config this repo does not ship. Bump here, then bump consumers.",
+  "node": "24",
+  "pnpm": "11.3.0",
+  "python": "3.14",
+  "npm": {
+    "typescript": "6.0.3",
+    "prettier": "3.8.3",
+    "eslint": "9.39.4",
+    "typescript-eslint": "8.59.4",
+    "eslint-config-next": "16.2.6",
+    "eslint-config-prettier": "10.1.8",
+    "eslint-plugin-import": "2.32.0"
+  },
+  "python_dev": {
+    "ruff": ">=0.6",
+    "mypy": ">=1.11"
+  }
+}
