@@ -1,7 +1,8 @@
 # Shared lefthook config for builtbydoug repos (https://lefthook.dev).
 #
-# Copy to <repo>/lefthook.yml via scripts/sync-config.sh. Installs on
-# `pnpm install` through each repo's `prepare: lefthook install` script.
+# Starter template: copy to <repo>/lefthook.yml when standing up a repo, then
+# own it locally. Installs on `pnpm install` via each repo's
+# `prepare: lefthook install` script.
 #
 # These hooks are a fast local feedback accelerator on top of CI, not a gate:
 # they run on STAGED files only, stay in the "seconds" range, and are bypassable

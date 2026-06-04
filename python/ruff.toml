@@ -1,7 +1,7 @@
 # Shared ruff baseline for builtbydoug Python workspaces.
 #
-# Consume by extending from the installed package (preferred), or copy via
-# scripts/sync-config.sh if a node_modules path is awkward for the Python tree:
+# Consume by extending from the installed package (preferred), or copy once into
+# a new repo if a node_modules path is awkward for the Python tree:
 #
 #   # python/ruff.toml  (or [tool.ruff] section pointing at this file)
 #   extend = "../node_modules/@builtbydoug/dev-config/python/ruff.toml"

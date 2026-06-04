@@ -13,9 +13,10 @@ copy. See `README.md` for the consumption model and the locked decisions.
   `package.json` `version`, tag a release, and note what downstream repos must do
   to adopt it.
 - Keep the two distribution models straight: *importable* configs (Prettier,
-  tsconfig, ESLint, ruff) change behavior on the next install; *copyable* files
-  (workflows, dependabot, CODEOWNERS, lefthook, AGENTS blocks) only change after
-  a repo re-runs `scripts/sync-config.sh`.
+  tsconfig, ESLint, ruff) are live — they change behavior on the next install.
+  *Starter templates* (workflows, dependabot, CODEOWNERS, lefthook, AGENTS
+  content) are copied once when a repo is created and then owned locally; we do
+  not demand they stay in sync, and drift is expected.
 
 ## Conventions
 

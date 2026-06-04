@@ -9,9 +9,6 @@
   "engines": {
     "node": ">=24"
   },
-  "bin": {
-    "dev-config-sync": "scripts/sync-config.sh"
-  },
   "exports": {
     "./prettier": "./prettier/index.json",
     "./typescript/tsconfig.base.json": "./typescript/tsconfig.base.json",
