@@ -11,7 +11,7 @@
 #         node-version: '24'
 #
 # All third-party actions are pinned to a full commit SHA with a `# vX.Y.Z`
-# comment, per the action-pinning policy (scripts/check-action-pins.sh).
+# comment, per the action-pinning policy.
 
 name: Node quality (reusable)
 

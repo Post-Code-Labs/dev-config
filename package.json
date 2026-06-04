@@ -1,7 +1,7 @@
 {
   "name": "@builtbydoug/dev-config",
   "version": "0.1.0",
-  "description": "Shared baseline tooling (lint, format, typecheck, CI, AGENTS) for builtbydoug repos",
+  "description": "Shared, importable baseline configs (Prettier, tsconfig, ESLint, ruff/mypy) + reusable CI for builtbydoug repos",
   "license": "UNLICENSED",
   "private": true,
   "type": "module",
@@ -24,10 +24,6 @@
     "typescript",
     "eslint",
     "python",
-    "lefthook",
-    "github",
-    "scripts",
-    "agents",
     "versions.json"
   ],
   "peerDependencies": {
