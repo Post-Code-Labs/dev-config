@@ -13,7 +13,7 @@
 { "prettier": "@builtbydoug/dev-config/prettier" }
 ```
 
-## With plugins (e.g. Tailwind in postcode)
+## With plugins (e.g. Tailwind)
 
 The base intentionally ships **no plugins** so non-Tailwind repos don't have to
 install them. A repo that needs a plugin re-exports the base and adds its own:

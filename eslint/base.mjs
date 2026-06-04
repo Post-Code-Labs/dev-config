@@ -1,4 +1,4 @@
-// Shared flat ESLint preset for builtbydoug TypeScript repos.
+// Shared flat ESLint preset for consuming TypeScript repos.
 //
 // Philosophy (locked 2026-06): typescript-eslint `strictTypeChecked` +
 // `stylisticTypeChecked` + sonarjs + import ordering + complexity guardrails.

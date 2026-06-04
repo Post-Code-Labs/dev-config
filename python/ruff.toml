@@ -1,4 +1,4 @@
-# Shared ruff baseline for builtbydoug Python workspaces.
+# Shared ruff baseline for consuming Python workspaces.
 #
 # Consume by extending from the installed package (preferred), or copy once into
 # a new repo if a node_modules path is awkward for the Python tree:

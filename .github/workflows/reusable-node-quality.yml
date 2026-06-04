@@ -1,4 +1,4 @@
-# Reusable Node/pnpm quality gate. Callable from any builtbydoug repo via
+# Reusable Node/pnpm quality gate. Callable from any consuming repo via
 # `workflow_call` — this is how CI is *shared* (workflow files can't be
 # `extends`-ed like configs). Pin the call to a dev-config tag.
 #

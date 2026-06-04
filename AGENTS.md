@@ -1,29 +1,43 @@
 # dev-config — coding-agent instructions
 
-This repo is the shared, **importable** baseline configs consumed by other
-`builtbydoug` repos. It has no application code; everything here is config that
-other repos `extends`/`import` (Prettier, tsconfig, ESLint, ruff/mypy) plus one
-reusable CI workflow. See `README.md` for the consumption model and the locked
-decisions.
+This repo is the single source of truth for the **importable baseline configs**
+that consuming repos depend on: Prettier, tsconfig, ESLint, ruff/mypy — plus one
+reusable CI workflow. It has no application code. Its outputs are other repos'
+lint/format/type/CI behavior, so the bar is correctness and predictability.
+See `README.md` for the full consumption model and the locked decisions.
 
-## Scope
+## What qualifies to live here
 
-- In scope: **required, live imports** — configs repos depend on and that ripple
-  to every consumer on install.
-- Out of scope: one-time scaffold files (AGENTS.md content, CODEOWNERS,
-  dependabot, lefthook, PR templates). Those belong in a future `repo-template`,
-  not here. Don't reintroduce them.
+Add an artifact only if **all** hold — otherwise it stays in the consuming repo
+(or a separate template repo):
 
-## Working rules
+1. **Consumed by reference, not copy** — `extends`/`import`/`uses:`-d, so an edit
+   propagates on install. If adoption means copying a file, it does not qualify.
+2. **Universally correct** — right for every consumer, not one project's taste.
+   Anything needing per-repo divergence is exposed as an overridable base.
+3. **Behavior-defining and mechanically checkable** — sets lint/format/type/CI
+   behavior a tool can verify, so "in sync" is provable.
+4. **A stable, versioned contract** — clear import path, shipped under a tag.
 
-- Changes here ripple to every consuming repo. Treat edits as breaking by
-  default: prefer additive changes, and call out anything that alters lint,
-  format, type-check, or CI behavior.
-- Consumers pin to a **git tag**, never `main`. After a meaningful change, bump
-  `package.json` `version`, tag a release, and note what downstream repos must do
-  to adopt it.
-- Keep `package.json` `exports`/`files` in step with the actual config files so
-  every importable path resolves.
+Explicitly out of scope: one-time scaffold (AGENTS.md content, CODEOWNERS,
+dependabot, lefthook, PR templates). Those belong in a template repo, not here —
+don't reintroduce them.
+
+## Keeping quality high
+
+- **Identical inputs → identical outputs.** Pin in `versions.json` exactly the
+  toolchain the shipped configs depend on; keep the inputs minimal and
+  composable (small base + documented override seam, not a project's full config).
+- **Breaking by default.** Treat every edit as breaking until shown otherwise.
+  Prefer additive change; call out anything that alters lint/format/type/CI
+  behavior and what consumers must do to adopt it.
+- **Versioned adoption.** Consumers pin a **git tag**, never `main`. After a
+  meaningful change, bump `package.json` `version`, tag, and note the migration.
+- **Composition over forking.** Extend the base through its override seam rather
+  than copying or special-casing a consumer here.
+- **Resolvable surface.** Keep `package.json` `exports`/`files` in step with the
+  files so every advertised import path resolves; confirm configs parse and
+  presets load before tagging.
 
 ## Conventions
 
@@ -32,8 +46,6 @@ decisions.
   `workflow_call`) and is `workflow_call`-only, so it never self-triggers.
 - Pin every `uses:` in the reusable workflow to a full commit SHA with a
   `# vX.Y.Z` comment.
-- Locked toolchain decisions and pinned versions live in `README.md` and
-  `versions.json` — keep them in sync with the actual config files.
 
 ## Git workflow
 
