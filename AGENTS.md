@@ -1,17 +1,17 @@
 # dev-config — coding-agent instructions
 
 This repo is the single source of truth for the **importable baseline configs**
-that consuming repos depend on: Prettier, tsconfig, ESLint, ruff/mypy — plus one
-reusable CI workflow. It has no application code. Its outputs are other repos'
-lint/format/type/CI behavior, so the bar is correctness and predictability.
-See `README.md` for the full consumption model and the locked decisions.
+that consuming repos depend on: Prettier, tsconfig, ESLint, ruff/mypy. It has no
+application code. Its outputs are other repos' lint/format/type behavior, so the
+bar is correctness and predictability. See `README.md` for the full consumption
+model and the locked decisions.
 
 ## What qualifies to live here
 
 Add an artifact only if **all** hold — otherwise it stays in the consuming repo
 (or a separate template repo):
 
-1. **Consumed by reference, not copy** — `extends`/`import`/`uses:`-d, so an edit
+1. **Consumed by reference, not copy** — `extends`/`import`-ed, so an edit
    propagates on install. If adoption means copying a file, it does not qualify.
 2. **Universally correct** — right for every consumer, not one project's taste.
    Anything needing per-repo divergence is exposed as an overridable base.
@@ -32,7 +32,9 @@ don't reintroduce them.
   Prefer additive change; call out anything that alters lint/format/type/CI
   behavior and what consumers must do to adopt it.
 - **Versioned adoption.** Consumers pin a **git tag**, never `main`. After a
-  meaningful change, bump `package.json` `version`, tag, and note the migration.
+  meaningful change, cut a CalVer tag (`YYYY.MM`, e.g. `2026.06`; same-month
+  re-release appends `.N`) and note the migration. The tag is the version
+  contract — the `package.json` `version` field is not.
 - **Composition over forking.** Extend the base through its override seam rather
   than copying or special-casing a consumer here.
 - **Resolvable surface.** Keep `package.json` `exports`/`files` in step with the
@@ -42,10 +44,8 @@ don't reintroduce them.
 ## Conventions
 
 - The repo's own instructions live in `AGENTS.md` with a `CLAUDE.md` symlink.
-- The reusable workflow lives under `.github/workflows/` (required for
-  `workflow_call`) and is `workflow_call`-only, so it never self-triggers.
-- Pin every `uses:` in the reusable workflow to a full commit SHA with a
-  `# vX.Y.Z` comment.
+- Locked toolchain decisions and pinned versions live in `README.md` and
+  `versions.json` — keep them in step with the actual config files.
 
 ## Git workflow
 

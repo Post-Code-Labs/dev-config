@@ -1,8 +1,8 @@
 // Shared flat ESLint preset for consuming TypeScript repos.
 //
 // Philosophy (locked 2026-06): typescript-eslint `strictTypeChecked` +
-// `stylisticTypeChecked` + sonarjs + import ordering + complexity guardrails.
-// No mandatory JSDoc. Stylistic rules that fight Prettier are disabled last via
+// `stylisticTypeChecked` + import ordering + complexity guardrails. No mandatory
+// JSDoc. Stylistic rules that fight Prettier are disabled last via
 // `eslint-config-prettier`.
 //
 // Type-aware rules need a TS program. We use `parserOptions.projectService` so
@@ -21,7 +21,6 @@
 
 import prettierConfig from 'eslint-config-prettier/flat';
 import importPlugin from 'eslint-plugin-import';
-import sonarjs from 'eslint-plugin-sonarjs';
 import tseslint from 'typescript-eslint';
 
 // Import hygiene + deterministic ordering (builtin/external, then internal).
@@ -64,7 +63,6 @@ export const tsRules = {
 // outlier exists, loosen a single rule locally.
 export const complexityRules = {
   complexity: ['error', 15],
-  'sonarjs/cognitive-complexity': ['error', 15],
   'max-depth': ['error', 4],
   'max-params': ['error', 4],
   'max-nested-callbacks': ['error', 3],
@@ -76,7 +74,6 @@ export const complexityRules = {
 const testRelaxations = {
   'max-nested-callbacks': ['error', 4],
   'max-lines-per-function': 'off',
-  'sonarjs/no-duplicate-string': 'off',
   '@typescript-eslint/no-unsafe-assignment': 'off',
   '@typescript-eslint/no-unsafe-argument': 'off',
   '@typescript-eslint/no-unsafe-member-access': 'off',
@@ -93,7 +90,6 @@ export function baseConfig({ tsconfigRootDir } = {}) {
   return [
     ...tseslint.configs.strictTypeChecked,
     ...tseslint.configs.stylisticTypeChecked,
-    sonarjs.configs.recommended,
     {
       files: ['**/*.{ts,tsx}'],
       plugins: { import: importPlugin },

@@ -1,11 +1,11 @@
 {
   "name": "@builtbydoug/dev-config",
-  "version": "0.1.0",
-  "description": "Shared, importable baseline configs (Prettier, tsconfig, ESLint, ruff/mypy) + reusable CI for builtbydoug repos",
+  "version": "0.0.0",
+  "description": "Shared, importable baseline configs (Prettier, tsconfig, ESLint, ruff/mypy) for consuming repos. Released as CalVer git tags (YYYY.MM); the tag is the version contract, not this field.",
   "license": "UNLICENSED",
   "private": true,
   "type": "module",
-  "packageManager": "pnpm@10.33.0",
+  "packageManager": "pnpm@11.3.0",
   "engines": {
     "node": ">=24"
   },
@@ -31,7 +31,6 @@
     "eslint-config-next": ">=16.2.0",
     "eslint-config-prettier": ">=10.1.0",
     "eslint-plugin-import": ">=2.32.0",
-    "eslint-plugin-sonarjs": ">=4.0.0",
     "prettier": ">=3.8.0",
     "typescript": ">=6.0.0",
     "typescript-eslint": ">=8.39.0"

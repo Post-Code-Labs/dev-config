@@ -1,8 +1,7 @@
 # @builtbydoug/dev-config
 
 Single source of truth for the **importable baseline configs** shared across
-consuming repos: linting, formatting, type-check, and Python tooling — plus one
-reusable CI workflow.
+consuming repos: linting, formatting, type-check, and Python tooling.
 
 Everything here is a **required, live import**: a consumer `extends`/`import`s
 these out of `node_modules` (pinned to a tag), so a change here ripples to every
@@ -14,9 +13,9 @@ An artifact belongs in this repo only if **all** of the following hold. If any
 fails, it stays in the consuming repo (or, for one-time scaffold, a separate
 template repo) — not here.
 
-1. **Consumed by reference, not by copy.** It is `extends`/`import`/`uses:`-d
-   from the package, so a single edit propagates on install. If the only way to
-   adopt it is to copy a file, it does not qualify.
+1. **Consumed by reference, not by copy.** It is `extends`/`import`-ed from the
+   package, so a single edit propagates on install. If the only way to adopt it
+   is to copy a file, it does not qualify.
 2. **Universally correct.** The rule is right for *every* consumer, not one
    project's local taste. Anything that needs per-repo divergence to be correct
    is exposed as an overridable base — never hard-coded here.
@@ -37,11 +36,10 @@ documented override seam, not a project's full config), and the outputs stay
 | `prettier/index.json` | Canonical Prettier config | `"prettier": "@builtbydoug/dev-config/prettier"` in `package.json` |
 | `typescript/tsconfig.base.json` | Base strict TS config (Node) | `"extends": "@builtbydoug/dev-config/typescript/tsconfig.base.json"` |
 | `typescript/tsconfig.react.json` | Base + DOM/JSX for Next.js apps | `extends` as above |
-| `eslint/base.mjs` | Flat ESLint preset (strict type-checked + stylistic + sonarjs + import + complexity) | `import { baseConfig } from '@builtbydoug/dev-config/eslint/base'` |
+| `eslint/base.mjs` | Flat ESLint preset (strict type-checked + stylistic + import + complexity) | `import { baseConfig } from '@builtbydoug/dev-config/eslint/base'` |
 | `eslint/react.mjs` | `baseConfig` + `eslint-config-next` | `import { reactConfig } from '@builtbydoug/dev-config/eslint/react'` |
 | `python/ruff.toml` | Shared ruff lint/format baseline | `extend = ".../ruff.toml"` |
 | `python/mypy.ini` | Shared mypy strict baseline | `extend` / merge keys |
-| `.github/workflows/reusable-node-quality.yml` | Reusable CI (`workflow_call`) | `uses: builtbydoug/dev-config/.github/workflows/reusable-node-quality.yml@<tag>` |
 | `versions.json` | Pinned toolchain versions | reference when wiring `devDependencies` |
 
 ## Locked decisions (2026-06)
@@ -50,7 +48,8 @@ documented override seam, not a project's full config), and the outputs stay
 - **Package manager:** pnpm everywhere.
 - **TypeScript target:** `ES2024`.
 - **ESLint base:** typescript-eslint `strictTypeChecked` + `stylisticTypeChecked`
-  + `sonarjs` + import ordering + complexity guardrails. No mandatory JSDoc.
+  + import ordering + complexity guardrails. No mandatory JSDoc.
+- **Versioning:** CalVer git tags `YYYY.MM` (e.g. `2026.06`).
 
 ## Keeping quality high
 
@@ -74,10 +73,15 @@ is correctness and predictability, upheld by process:
 
 ## Versioning
 
-**Pin consumers to a git tag, never the default branch.** Installing
+Releases are **CalVer git tags** in the form `YYYY.MM` (e.g. `2026.06`). A
+second release within the same month appends an incrementing suffix:
+`2026.06.1`, `2026.06.2`, …
+
+**Pin consumers to a tag, never the default branch.** Installing
 `github:builtbydoug/dev-config` untagged tracks `main`, so a single edit here
-would silently change linting/formatting/CI across every consumer on the next
-install. Tag releases (`v0.1.0`, …) and bump each consumer deliberately.
+would silently change linting/formatting/type-check across every consumer on the
+next install. Bump each consumer's pin deliberately. (The package is consumed by
+git tag, so the `package.json` `version` field is not the contract — the tag is.)
 
 ## Consuming repo install
 
@@ -85,7 +89,7 @@ install. Tag releases (`v0.1.0`, …) and bump each consumer deliberately.
 // package.json
 {
   "devDependencies": {
-    "@builtbydoug/dev-config": "github:builtbydoug/dev-config#v0.1.0"
+    "@builtbydoug/dev-config": "github:builtbydoug/dev-config#2026.06"
   }
 }
 ```
@@ -111,15 +115,6 @@ export default [
   globalIgnores(['dist/**', 'coverage/**', '.next/**', 'worktrees/**']),
   ...baseConfig({ tsconfigRootDir: import.meta.dirname }),
 ];
-```
-
-```yaml
-# .github/workflows/ci.yml
-jobs:
-  quality:
-    uses: builtbydoug/dev-config/.github/workflows/reusable-node-quality.yml@v0.1.0
-    with:
-      node-version: '24'
 ```
 
 See each file's README/header for specifics (e.g. `prettier/README.md` for the
