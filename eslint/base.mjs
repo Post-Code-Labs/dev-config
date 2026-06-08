@@ -20,7 +20,11 @@
 //   ];
 
 import prettierConfig from 'eslint-config-prettier/flat';
-import importPlugin from 'eslint-plugin-import';
+// eslint-plugin-import-x, not eslint-plugin-import: the latter's newest release (2.32.0) calls
+// `sourceCode.getTokenOrCommentBefore`, removed in ESLint 10, so `import/order` throws when it
+// reports a violation. import-x is the maintained drop-in fork (eslint peer `^10`). Registered
+// under the `import` namespace below so the rule keys in `importRules` are unchanged.
+import importPlugin from 'eslint-plugin-import-x';
 import tseslint from 'typescript-eslint';
 
 // Import hygiene + deterministic ordering (builtin/external, then internal).

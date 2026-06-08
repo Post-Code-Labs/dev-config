@@ -104,3 +104,13 @@ test('baseConfig still loads and lints on its own (non-React path unregressed)',
     `expected the type-aware base rule to fire; got: ${[...ids].join(', ')}`,
   );
 });
+
+test('import/order reports violations on ESLint 10 (eslint-plugin-import-x, not the crashing fork)', async () => {
+  // With eslint-plugin-import@2.32.0 this throws on ESLint 10 (removed getTokenOrCommentBefore);
+  // eslint-plugin-import-x reports the violation instead.
+  const ids = ruleIds(await lintFixture(baseConfig(opts), 'import-order.ts'));
+  assert.ok(
+    ids.has('import/order'),
+    `expected import/order to be reported; got: ${[...ids].join(', ')}`,
+  );
+});
