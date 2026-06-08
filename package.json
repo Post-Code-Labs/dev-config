@@ -9,6 +9,9 @@
   "engines": {
     "node": ">=24"
   },
+  "scripts": {
+    "test": "node --test"
+  },
   "exports": {
     "./prettier": "./prettier/index.json",
     "./typescript/tsconfig.base.json": "./typescript/tsconfig.base.json",
@@ -27,17 +30,29 @@
     "versions.json"
   ],
   "peerDependencies": {
-    "eslint": ">=9.39.0",
-    "eslint-config-next": ">=16.2.0",
+    "eslint": "^10.4.0",
+    "eslint-config-next": ">=16.2.7",
     "eslint-config-prettier": ">=10.1.0",
-    "eslint-plugin-import": ">=2.32.0",
+    "eslint-plugin-import-x": ">=4.16.0",
     "prettier": ">=3.8.0",
     "typescript": ">=6.0.0",
-    "typescript-eslint": ">=8.39.0"
+    "typescript-eslint": ">=8.60.0"
   },
   "peerDependenciesMeta": {
     "eslint-config-next": {
       "optional": true
     }
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.0",
+    "eslint": "10.4.1",
+    "eslint-config-next": "16.2.7",
+    "eslint-config-prettier": "10.1.8",
+    "eslint-plugin-import-x": "4.16.2",
+    "next": "^16.2.7",
+    "prettier": "3.8.3",
+    "react": "^19.0.0",
+    "typescript": "6.0.3",
+    "typescript-eslint": "8.60.1"
   }
 }

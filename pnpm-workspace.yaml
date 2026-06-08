@@ -1,0 +1,5 @@
+# Deny build scripts for these transitive native deps (prebuilt binaries ship; sharp is unused by
+# linting) so install/test stay deterministic. pnpm 11 reads build decisions here, not package.json.
+allowBuilds:
+  sharp: false
+  unrs-resolver: false

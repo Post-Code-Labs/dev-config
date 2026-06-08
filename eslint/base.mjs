@@ -20,7 +20,9 @@
 //   ];
 
 import prettierConfig from 'eslint-config-prettier/flat';
-import importPlugin from 'eslint-plugin-import';
+// import-x, not eslint-plugin-import: the latter crashes on ESLint 10 (removed API). Drop-in fork,
+// registered as `import` below so the `importRules` keys are unchanged.
+import importPlugin from 'eslint-plugin-import-x';
 import tseslint from 'typescript-eslint';
 
 // Import hygiene + deterministic ordering (builtin/external, then internal).
