@@ -7,6 +7,7 @@ import { test } from 'node:test';
 
 import { ESLint } from 'eslint';
 import nextVitals from 'eslint-config-next/core-web-vitals';
+import tseslint from 'typescript-eslint';
 
 import { baseConfig } from '../eslint/base.mjs';
 import { reactConfig, withoutBaseOwnedPlugins } from '../eslint/react.mjs';
@@ -86,6 +87,19 @@ test('reactConfig loads and enforces both the shared base and the Next/React lay
   assert.ok(
     ids.has('react-hooks/rules-of-hooks'),
     `expected the Next/React rule to fire; got: ${[...ids].join(', ')}`,
+  );
+});
+
+test('reactConfig lints non-TS files: next’s import/* rules resolve (import plugin not orphaned)', async () => {
+  // disableTypeChecked for the JS family, like a real consumer (no TS project there).
+  const config = [
+    ...reactConfig(opts),
+    { files: ['**/*.{js,jsx,cjs,mjs}'], ...tseslint.configs.disableTypeChecked },
+  ];
+  const ids = ruleIds(await lintFixture(config, 'anon-default.jsx'));
+  assert.ok(
+    ids.has('import/no-anonymous-default-export'),
+    `expected next’s import/no-anonymous-default-export to resolve and fire on a non-TS file; got: ${[...ids].join(', ')}`,
   );
 });
 
