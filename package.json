@@ -9,6 +9,9 @@
   "engines": {
     "node": ">=24"
   },
+  "scripts": {
+    "test": "node --test"
+  },
   "exports": {
     "./prettier": "./prettier/index.json",
     "./typescript/tsconfig.base.json": "./typescript/tsconfig.base.json",
@@ -39,5 +42,17 @@
     "eslint-config-next": {
       "optional": true
     }
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.0",
+    "eslint": "9.39.4",
+    "eslint-config-next": "16.2.6",
+    "eslint-config-prettier": "10.1.8",
+    "eslint-plugin-import": "2.32.0",
+    "next": "^16.2.0",
+    "prettier": "3.8.3",
+    "react": "^19.0.0",
+    "typescript": "6.0.3",
+    "typescript-eslint": "8.59.4"
   }
 }

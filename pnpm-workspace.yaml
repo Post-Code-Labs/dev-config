@@ -1,0 +1,8 @@
+# Build-script approval for the eslint smoke-test toolchain. pnpm 11 reads build decisions
+# here (the package.json "pnpm" field is deprecated). These transitive native deps don't need
+# their build scripts run — their packages ship prebuilt binaries, and sharp is next's image
+# runtime, irrelevant to linting — so deny them. This keeps `pnpm install`/`pnpm test`
+# deterministic (exit 0) on a clean CI checkout instead of erroring on "ignored build scripts".
+allowBuilds:
+  sharp: false
+  unrs-resolver: false
