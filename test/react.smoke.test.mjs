@@ -69,15 +69,18 @@ test('reactConfig leaves @typescript-eslint/import registration entirely to base
 
 test('the un-deduped composition throws the redefine ConfigError, the fix does not', async () => {
   const divergent = withDivergentBaseOwnedPlugins(nextVitals);
+  // Mirror reactConfig's react.version pin so the deduped case doesn't hit eslint-plugin-react's
+  // ESLint-10 auto-detection crash (orthogonal to the redefine clash under test).
+  const reactPin = { settings: { react: { version: '19.0' } } };
   const file = 'Component.tsx';
 
   await assert.rejects(
-    () => lintFixture([...divergent, ...baseConfig(opts)], file),
+    () => lintFixture([...divergent, reactPin, ...baseConfig(opts)], file),
     /Cannot redefine plugin/,
     'the original [...nextVitals, ...baseConfig] composition must fail under divergent plugin instances',
   );
   await assert.doesNotReject(
-    () => lintFixture([...withoutBaseOwnedPlugins(divergent), ...baseConfig(opts)], file),
+    () => lintFixture([...withoutBaseOwnedPlugins(divergent), reactPin, ...baseConfig(opts)], file),
     'stripping next’s base-owned plugin definitions must remove the clash',
   );
 });

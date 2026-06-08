@@ -12,6 +12,11 @@
 //     globalIgnores(['.next/**', 'dist/**', 'out/**', 'worktrees/**', 'next-env.d.ts']),
 //     ...reactConfig({ tsconfigRootDir: import.meta.dirname }),
 //   ];
+//
+// `react.version` is pinned here (default '19.0') because eslint-config-next sets it to
+// 'detect', and on ESLint 10 the bundled eslint-plugin-react@7.37.5 crashes during
+// auto-detection — its probe calls the removed `context.getFilename()`. Pinning a concrete
+// version skips detection. Override with `reactConfig({ reactVersion: '18.3' })` if needed.
 
 import nextVitals from 'eslint-config-next/core-web-vitals';
 
@@ -58,11 +63,17 @@ export function withoutBaseOwnedPlugins(configs) {
 
 /**
  * Build the shared React/Next flat-config array.
- * @param {{ tsconfigRootDir?: string }} [options]
+ * @param {{ tsconfigRootDir?: string, reactVersion?: string }} [options]
  * @returns {import('eslint').Linter.Config[]}
  */
-export function reactConfig(options = {}) {
-  return [...withoutBaseOwnedPlugins(nextVitals), ...baseConfig(options)];
+export function reactConfig({ reactVersion = '19.0', ...options } = {}) {
+  return [
+    ...withoutBaseOwnedPlugins(nextVitals),
+    // Override eslint-config-next's `react.version: 'detect'` (see header) — must come after
+    // the next configs to win. A settings-only config applies to every file.
+    { name: 'dev-config/react-version', settings: { react: { version: reactVersion } } },
+    ...baseConfig(options),
+  ];
 }
 
 export default reactConfig;
