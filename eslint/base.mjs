@@ -20,10 +20,8 @@
 //   ];
 
 import prettierConfig from 'eslint-config-prettier/flat';
-// eslint-plugin-import-x, not eslint-plugin-import: the latter's newest release (2.32.0) calls
-// `sourceCode.getTokenOrCommentBefore`, removed in ESLint 10, so `import/order` throws when it
-// reports a violation. import-x is the maintained drop-in fork (eslint peer `^10`). Registered
-// under the `import` namespace below so the rule keys in `importRules` are unchanged.
+// import-x, not eslint-plugin-import: the latter crashes on ESLint 10 (removed API). Drop-in fork,
+// registered as `import` below so the `importRules` keys are unchanged.
 import importPlugin from 'eslint-plugin-import-x';
 import tseslint from 'typescript-eslint';
 

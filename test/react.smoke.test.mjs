@@ -1,11 +1,6 @@
-// Smoke check for the shipped ESLint presets. The bug it guards: `reactConfig` threw
-// `ConfigError: Cannot redefine plugin "@typescript-eslint"` (and would next throw it for
-// `import`) because eslint-config-next and `baseConfig` both registered those plugins. The
-// error only fires when a consumer's dependency tree resolves *divergent* plugin instances
-// (a clean, deduped install masks it), so the tests below cover both:
-//   - structural: `reactConfig` leaves base-owned plugin registration entirely to baseConfig;
-//   - end-to-end: under forced divergence the old composition throws and the shipped fix does not;
-//   - behavioral: the merged preset loads and enforces a rule from each layer.
+// Smoke check for the shipped presets on ESLint 10: reactConfig loads (no "Cannot redefine plugin"
+// clash, which only surfaces under divergent plugin instances — see the forced-divergence test),
+// and a rule from each layer fires without crashing.
 import assert from 'node:assert/strict';
 import { fileURLToPath } from 'node:url';
 import { test } from 'node:test';
@@ -33,8 +28,7 @@ const ruleIds = (messages) => new Set(messages.map((m) => m.ruleId));
 const definerCount = (configs, plugin) =>
   configs.filter((c) => c.plugins && plugin in c.plugins).length;
 
-/** Clone the @typescript-eslint/import plugin objects so they are *different* instances than
- *  baseConfig's — reproducing a consumer tree that didn't dedupe eslint-config-next's copies. */
+/** Clone @typescript-eslint/import to different instances — mimics a tree that didn't dedupe next's copies. */
 const withDivergentBaseOwnedPlugins = (configs) =>
   configs.map((c) => {
     if (!c.plugins) return c;
@@ -46,8 +40,7 @@ const withDivergentBaseOwnedPlugins = (configs) =>
   });
 
 test('reactConfig leaves @typescript-eslint/import registration entirely to baseConfig', () => {
-  // The regression is environment-independent here: the old preset added next's duplicate
-  // registrations on top of baseConfig's; the fix removes them, so the definer counts match.
+  // The old preset added next's duplicate registrations on top of baseConfig's; the fix removes them.
   const react = reactConfig(opts);
   const base = baseConfig(opts);
   for (const plugin of BASE_OWNED_PLUGINS) {
@@ -69,8 +62,7 @@ test('reactConfig leaves @typescript-eslint/import registration entirely to base
 
 test('the un-deduped composition throws the redefine ConfigError, the fix does not', async () => {
   const divergent = withDivergentBaseOwnedPlugins(nextVitals);
-  // Mirror reactConfig's react.version pin so the deduped case doesn't hit eslint-plugin-react's
-  // ESLint-10 auto-detection crash (orthogonal to the redefine clash under test).
+  // Pin react.version like reactConfig so the deduped case doesn't hit eslint-plugin-react's v10 crash.
   const reactPin = { settings: { react: { version: '19.0' } } };
   const file = 'Component.tsx';
 
@@ -106,8 +98,7 @@ test('baseConfig still loads and lints on its own (non-React path unregressed)',
 });
 
 test('import/order reports violations on ESLint 10 (eslint-plugin-import-x, not the crashing fork)', async () => {
-  // With eslint-plugin-import@2.32.0 this throws on ESLint 10 (removed getTokenOrCommentBefore);
-  // eslint-plugin-import-x reports the violation instead.
+  // eslint-plugin-import@2.32.0 throws here on ESLint 10; import-x reports the violation.
   const ids = ruleIds(await lintFixture(baseConfig(opts), 'import-order.ts'));
   assert.ok(
     ids.has('import/order'),

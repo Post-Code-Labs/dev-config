@@ -1,5 +1,4 @@
-// Smoke-test fixture for the non-React path: a single type-aware base violation
-// (@typescript-eslint/no-floating-promises) so `baseConfig` can be checked on its own.
+// Fixture for the non-React path: one @typescript-eslint/no-floating-promises violation.
 async function persist(): Promise<void> {
   // no-op
 }

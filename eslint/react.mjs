@@ -13,38 +13,20 @@
 //     ...reactConfig({ tsconfigRootDir: import.meta.dirname }),
 //   ];
 //
-// `react.version` is pinned here (default '19.0') because eslint-config-next sets it to
-// 'detect', and on ESLint 10 the bundled eslint-plugin-react@7.37.5 crashes during
-// auto-detection — its probe calls the removed `context.getFilename()`. Pinning a concrete
-// version skips detection. Override with `reactConfig({ reactVersion: '18.3' })` if needed.
+// `react.version` is pinned (default '19.0', override via `reactConfig({ reactVersion })`):
+// eslint-config-next's 'detect' crashes eslint-plugin-react on ESLint 10.
 
 import nextVitals from 'eslint-config-next/core-web-vitals';
 
 import { baseConfig } from './base.mjs';
 
-// eslint-config-next bundles its OWN copies of the `@typescript-eslint` and `import` plugins
-// (its `next/typescript` config registers the former, its `next` config the latter). ESLint
-// flat config forbids defining one plugin name with two different plugin objects across
-// configs that match the same files, and `baseConfig` already registers both — so spreading
-// the two arrays as-is throws `Cannot redefine plugin "@typescript-eslint"`.
-//
-// `baseConfig` must stay the single definer of both: its type-aware `strictTypeChecked` rules
-// are bound to the consumer's typescript-eslint, not next's vendored copy. So we strip next's
-// duplicate plugin *definitions* and let `baseConfig` own them. next's
-// react/react-hooks/jsx-a11y/@next/next plugins and all their rules are kept untouched; next's
-// `import/*` rules and resolver settings remain and resolve against `baseConfig`'s import
-// plugin (flat config merges every matching config, then resolves rule references against the
-// single plugin namespace). Matched by plugin *presence*, not config name, to stay resilient
-// to eslint-config-next reshuffling its internals.
+// eslint-config-next also registers @typescript-eslint and import, but flat config forbids two
+// configs defining one plugin name with different objects ("Cannot redefine plugin"). Strip next's
+// copies (matched by presence, not config name) so baseConfig is the sole definer; next's
+// react/react-hooks/jsx-a11y/@next/next plugins and import rules still apply.
 const BASE_OWNED_PLUGINS = ['@typescript-eslint', 'import'];
 
-/**
- * Strip the `@typescript-eslint`/`import` plugin *definitions* from an
- * eslint-config-next config array so `baseConfig` can be their single definer.
- * Exported for the smoke test; consumers should use {@link reactConfig}.
- * @param {import('eslint').Linter.Config[]} configs
- * @returns {import('eslint').Linter.Config[]}
- */
+/** Strip the base-owned plugin definitions from an eslint-config-next array. Exported for tests. */
 export function withoutBaseOwnedPlugins(configs) {
   return configs.flatMap((config) => {
     if (!config.plugins) return [config];
@@ -52,9 +34,7 @@ export function withoutBaseOwnedPlugins(configs) {
     if (owned.length === 0) return [config];
     const plugins = { ...config.plugins };
     for (const name of owned) delete plugins[name];
-    // A config left with no plugins and no rules only carried a base-owned plugin plus a parser
-    // (next's `next/typescript`, redundant with strictTypeChecked). Drop it so it can't shadow
-    // baseConfig's parser/projectService settings; settings-only configs are kept above.
+    // Left with only a base-owned plugin + parser (next/typescript) → drop; baseConfig owns parsing.
     const hasRules = config.rules && Object.keys(config.rules).length > 0;
     if (Object.keys(plugins).length === 0 && !hasRules) return [];
     return [{ ...config, plugins }];
@@ -69,8 +49,7 @@ export function withoutBaseOwnedPlugins(configs) {
 export function reactConfig({ reactVersion = '19.0', ...options } = {}) {
   return [
     ...withoutBaseOwnedPlugins(nextVitals),
-    // Override eslint-config-next's `react.version: 'detect'` (see header) — must come after
-    // the next configs to win. A settings-only config applies to every file.
+    // Override next's `react.version: 'detect'` (see header); must follow next's configs to win.
     { name: 'dev-config/react-version', settings: { react: { version: reactVersion } } },
     ...baseConfig(options),
   ];
