@@ -1,5 +1,5 @@
 {
-  "name": "@builtbydoug/dev-config",
+  "name": "@post-code-labs/dev-config",
   "version": "0.0.0",
   "description": "Shared, importable baseline configs (Prettier, tsconfig, ESLint, ruff/mypy) for consuming repos. Released as CalVer git tags (YYYY.MM); the tag is the version contract, not this field.",
   "license": "UNLICENSED",

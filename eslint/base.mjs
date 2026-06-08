@@ -12,7 +12,7 @@
 // Usage (consumer eslint.config.mjs):
 //
 //   import { globalIgnores } from 'eslint/config';
-//   import { baseConfig } from '@builtbydoug/dev-config/eslint/base';
+//   import { baseConfig } from '@post-code-labs/dev-config/eslint/base';
 //
 //   export default [
 //     globalIgnores(['dist/**', 'coverage/**', '.next/**', 'worktrees/**']),

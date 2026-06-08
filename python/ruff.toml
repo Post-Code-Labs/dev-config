@@ -4,7 +4,7 @@
 # a new repo if a node_modules path is awkward for the Python tree:
 #
 #   # python/ruff.toml  (or [tool.ruff] section pointing at this file)
-#   extend = "../node_modules/@builtbydoug/dev-config/python/ruff.toml"
+#   extend = "../node_modules/@post-code-labs/dev-config/python/ruff.toml"
 #
 # Repo-specific bits (target-version, src layout, per-package excludes) stay
 # local and override these defaults.

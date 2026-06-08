@@ -6,7 +6,7 @@
 // Usage (consumer eslint.config.mjs in a Next.js app):
 //
 //   import { globalIgnores } from 'eslint/config';
-//   import { reactConfig } from '@builtbydoug/dev-config/eslint/react';
+//   import { reactConfig } from '@post-code-labs/dev-config/eslint/react';
 //
 //   export default [
 //     globalIgnores(['.next/**', 'dist/**', 'out/**', 'worktrees/**', 'next-env.d.ts']),

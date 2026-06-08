@@ -10,7 +10,7 @@ Per-repo `tsconfig.json` extends one of these and adds only what's local —
 ```jsonc
 // apps/webapp/tsconfig.json
 {
-  "extends": "@builtbydoug/dev-config/typescript/tsconfig.react.json",
+  "extends": "@post-code-labs/dev-config/typescript/tsconfig.react.json",
   "compilerOptions": {
     "plugins": [{ "name": "next" }],
     "paths": { "@/*": ["./src/*"] }
@@ -23,7 +23,7 @@ Per-repo `tsconfig.json` extends one of these and adds only what's local —
 ```jsonc
 // packages/<lib>/tsconfig.json
 {
-  "extends": "@builtbydoug/dev-config/typescript/tsconfig.base.json",
+  "extends": "@post-code-labs/dev-config/typescript/tsconfig.base.json",
   "compilerOptions": { "paths": { "@logging/*": ["../logging/src/*"] } },
   "include": ["./src/**/*.ts"]
 }
