@@ -1,6 +1,6 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
-  "display": "@builtbydoug/dev-config base (Node, ES2024, strict)",
+  "display": "@post-code-labs/dev-config base (Node, ES2024, strict)",
   "compilerOptions": {
     "target": "ES2024",
     "lib": ["ES2024"],

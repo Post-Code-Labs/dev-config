@@ -10,7 +10,7 @@
 
 ```jsonc
 // package.json
-{ "prettier": "@builtbydoug/dev-config/prettier" }
+{ "prettier": "@post-code-labs/dev-config/prettier" }
 ```
 
 ## With plugins (e.g. Tailwind)
@@ -20,7 +20,7 @@ install them. A repo that needs a plugin re-exports the base and adds its own:
 
 ```js
 // .prettierrc.mjs
-import base from '@builtbydoug/dev-config/prettier' with { type: 'json' };
+import base from '@post-code-labs/dev-config/prettier' with { type: 'json' };
 
 export default {
   ...base,

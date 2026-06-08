@@ -1,4 +1,4 @@
-# @builtbydoug/dev-config
+# @post-code-labs/dev-config
 
 Single source of truth for the **importable baseline configs** shared across
 consuming repos: linting, formatting, type-check, and Python tooling.
@@ -33,11 +33,11 @@ documented override seam, not a project's full config), and the outputs stay
 
 | Path | What it is | How a repo consumes it |
 | --- | --- | --- |
-| `prettier/index.json` | Canonical Prettier config | `"prettier": "@builtbydoug/dev-config/prettier"` in `package.json` |
-| `typescript/tsconfig.base.json` | Base strict TS config (Node) | `"extends": "@builtbydoug/dev-config/typescript/tsconfig.base.json"` |
+| `prettier/index.json` | Canonical Prettier config | `"prettier": "@post-code-labs/dev-config/prettier"` in `package.json` |
+| `typescript/tsconfig.base.json` | Base strict TS config (Node) | `"extends": "@post-code-labs/dev-config/typescript/tsconfig.base.json"` |
 | `typescript/tsconfig.react.json` | Base + DOM/JSX for Next.js apps | `extends` as above |
-| `eslint/base.mjs` | Flat ESLint preset (strict type-checked + stylistic + import + complexity) | `import { baseConfig } from '@builtbydoug/dev-config/eslint/base'` |
-| `eslint/react.mjs` | `baseConfig` + `eslint-config-next` | `import { reactConfig } from '@builtbydoug/dev-config/eslint/react'` |
+| `eslint/base.mjs` | Flat ESLint preset (strict type-checked + stylistic + import + complexity) | `import { baseConfig } from '@post-code-labs/dev-config/eslint/base'` |
+| `eslint/react.mjs` | `baseConfig` + `eslint-config-next` | `import { reactConfig } from '@post-code-labs/dev-config/eslint/react'` |
 | `python/ruff.toml` | Shared ruff lint/format baseline | `extend = ".../ruff.toml"` |
 | `python/mypy.ini` | Shared mypy strict baseline | `extend` / merge keys |
 | `versions.json` | Pinned toolchain versions | reference when wiring `devDependencies` |
@@ -78,7 +78,7 @@ second release within the same month appends an incrementing suffix:
 `2026.06.1`, `2026.06.2`, …
 
 **Pin consumers to a tag, never the default branch.** Installing
-`github:builtbydoug/dev-config` untagged tracks `main`, so a single edit here
+`github:Post-Code-Labs/dev-config` untagged tracks `main`, so a single edit here
 would silently change linting/formatting/type-check across every consumer on the
 next install. Bump each consumer's pin deliberately. (The package is consumed by
 git tag, so the `package.json` `version` field is not the contract — the tag is.)
@@ -89,7 +89,7 @@ git tag, so the `package.json` `version` field is not the contract — the tag i
 // package.json
 {
   "devDependencies": {
-    "@builtbydoug/dev-config": "github:builtbydoug/dev-config#2026.06"
+    "@post-code-labs/dev-config": "github:Post-Code-Labs/dev-config#2026.06.1"
   }
 }
 ```
@@ -98,18 +98,18 @@ Then wire each config by reference:
 
 ```jsonc
 // package.json
-{ "prettier": "@builtbydoug/dev-config/prettier" }
+{ "prettier": "@post-code-labs/dev-config/prettier" }
 ```
 
 ```jsonc
 // tsconfig.json
-{ "extends": "@builtbydoug/dev-config/typescript/tsconfig.base.json" }
+{ "extends": "@post-code-labs/dev-config/typescript/tsconfig.base.json" }
 ```
 
 ```js
 // eslint.config.mjs
 import { globalIgnores } from 'eslint/config';
-import { baseConfig } from '@builtbydoug/dev-config/eslint/base';
+import { baseConfig } from '@post-code-labs/dev-config/eslint/base';
 
 export default [
   globalIgnores(['dist/**', 'coverage/**', '.next/**', 'worktrees/**']),

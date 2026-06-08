@@ -1,6 +1,6 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
-  "display": "@builtbydoug/dev-config react (Next.js / DOM / JSX)",
+  "display": "@post-code-labs/dev-config react (Next.js / DOM / JSX)",
   "extends": "./tsconfig.base.json",
   "compilerOptions": {
     "lib": ["DOM", "DOM.Iterable", "ES2024", "ESNext"],
