@@ -93,8 +93,13 @@ export function baseConfig({ tsconfigRootDir } = {}) {
     ...tseslint.configs.strictTypeChecked,
     ...tseslint.configs.stylisticTypeChecked,
     {
-      files: ['**/*.{ts,tsx}'],
+      // Sole `import` definer, registered for all files so next's import/* rules
+      // resolve on non-TS files too; the import rules stay scoped to ts,tsx below.
+      name: 'dev-config/import-plugin',
       plugins: { import: importPlugin },
+    },
+    {
+      files: ['**/*.{ts,tsx}'],
       languageOptions: {
         parserOptions: {
           projectService: true,
