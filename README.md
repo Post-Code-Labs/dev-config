@@ -7,6 +7,9 @@ Everything here is a **required, live import**: a consumer `extends`/`import`s
 these out of `node_modules` (pinned to a tag), so a change here ripples to every
 consumer on the next install.
 
+Published as-is for our own consumption under the Apache-2.0 license. Not seeking
+external contributions or support — Issues are off, and PRs aren't monitored.
+
 ## What qualifies to live here
 
 An artifact belongs in this repo only if **all** of the following hold. If any
