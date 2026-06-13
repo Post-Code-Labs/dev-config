@@ -60,6 +60,12 @@ export const tsRules = {
   'prefer-const': 'error',
 };
 
+// Correctness rules the strict presets omit. (No `curly`: eslint-config-prettier disables it.)
+export const coreRules = {
+  eqeqeq: ['error', 'always', { null: 'ignore' }],
+  'no-console': ['error', { allow: ['warn', 'error'] }],
+};
+
 // Complexity & size guardrails (catch the "200-line nested mess" failure mode).
 // Conservative shared ceilings; a repo may tighten or, where a documented
 // outlier exists, loosen a single rule locally.
@@ -109,6 +115,7 @@ export function baseConfig({ tsconfigRootDir } = {}) {
       rules: {
         ...importRules,
         ...tsRules,
+        ...coreRules,
         ...complexityRules,
       },
     },

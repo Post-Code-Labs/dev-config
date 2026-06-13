@@ -20,6 +20,8 @@
     "./eslint/react": "./eslint/react.mjs",
     "./python/ruff.toml": "./python/ruff.toml",
     "./python/mypy.ini": "./python/mypy.ini",
+    "./python/.sqlfluff": "./python/.sqlfluff",
+    "./markdown/base.jsonc": "./markdown/base.jsonc",
     "./versions.json": "./versions.json"
   },
   "files": [
@@ -27,6 +29,7 @@
     "typescript",
     "eslint",
     "python",
+    "markdown",
     "versions.json"
   ],
   "peerDependencies": {

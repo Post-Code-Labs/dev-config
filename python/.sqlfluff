@@ -1,0 +1,23 @@
+# Shared sqlfluff baseline. sqlfluff has no `extends`, so mirror by copy (like
+# ruff/mypy in the Python tree) and keep in sync. Pin only what's unambiguous;
+# leave the rest at sqlfluff's `consistent` default.
+
+[sqlfluff]
+dialect = postgres
+templater = raw
+max_line_length = 100
+# PostGIS ST_* functions have no single capitalisation policy.
+exclude_rules = capitalisation.functions
+
+[sqlfluff:indentation]
+indent_unit = space
+tab_space_size = 4
+
+[sqlfluff:rules:capitalisation.keywords]
+capitalisation_policy = upper
+
+[sqlfluff:rules:capitalisation.identifiers]
+extended_capitalisation_policy = lower
+
+[sqlfluff:rules:layout.long_lines]
+ignore_comment_lines = true

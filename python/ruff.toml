@@ -10,9 +10,9 @@
 # local and override these defaults.
 
 [lint]
-# E/F pyflakes+pycodestyle, I import sorting, UP pyupgrade, B bugbear,
-# C901 mccabe cyclomatic complexity (the "tangled function" guardrail).
-select = ["E", "F", "I", "UP", "B", "C901"]
+# E/F pyflakes+pycodestyle, I imports, UP pyupgrade, B bugbear, C901 mccabe,
+# SIM simplify, C4 comprehensions, RET returns, RUF ruff, PIE anti-patterns.
+select = ["E", "F", "I", "UP", "B", "C901", "SIM", "C4", "RET", "RUF", "PIE"]
 
 [lint.mccabe]
 max-complexity = 10
