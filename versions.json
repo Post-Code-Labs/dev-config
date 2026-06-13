@@ -10,10 +10,12 @@
     "typescript-eslint": "8.60.1",
     "eslint-config-next": "16.2.7",
     "eslint-config-prettier": "10.1.8",
-    "eslint-plugin-import-x": "4.16.2"
+    "eslint-plugin-import-x": "4.16.2",
+    "markdownlint-cli2": "0.22.1"
   },
   "python_dev": {
     "ruff": ">=0.6",
-    "mypy": ">=1.11"
+    "mypy": ">=1.11",
+    "sqlfluff": ">=4.0"
   }
 }

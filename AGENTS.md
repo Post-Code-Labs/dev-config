@@ -1,10 +1,10 @@
 # dev-config — coding-agent instructions
 
 This repo is the single source of truth for the **importable baseline configs**
-that consuming repos depend on: Prettier, tsconfig, ESLint, ruff/mypy. It has no
-application code. Its outputs are other repos' lint/format/type behavior, so the
-bar is correctness and predictability. See `README.md` for the full consumption
-model and the locked decisions.
+that consuming repos depend on: Prettier, tsconfig, ESLint, ruff/mypy, sqlfluff,
+and markdownlint. It has no application code. Its outputs are other repos'
+lint/format/type behavior, so the bar is correctness and predictability. See
+`README.md` for the full consumption model and the locked decisions.
 
 ## What qualifies to live here
 
@@ -18,6 +18,9 @@ Add an artifact only if **all** hold — otherwise it stays in the consuming rep
 3. **Behavior-defining and mechanically checkable** — sets lint/format/type/CI
    behavior a tool can verify, so "in sync" is provable.
 4. **A stable, versioned contract** — clear import path, shipped under a tag.
+
+Exception to (1): the Python tree's ruff/mypy/sqlfluff have no reference mechanism,
+so they're mirrored by copy and kept in sync.
 
 Explicitly out of scope: one-time scaffold (AGENTS.md content, CODEOWNERS,
 dependabot, lefthook, PR templates). Those belong in a template repo, not here —

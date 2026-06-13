@@ -1,7 +1,7 @@
 # @post-code-labs/dev-config
 
 Single source of truth for the **importable baseline configs** shared across
-consuming repos: linting, formatting, type-check, and Python tooling.
+consuming repos: linting, formatting, type-check, Python, SQL, and Markdown tooling.
 
 Everything here is a **required, live import**: a consumer `extends`/`import`s
 these out of `node_modules` (pinned to a tag), so a change here ripples to every
@@ -43,6 +43,8 @@ documented override seam, not a project's full config), and the outputs stay
 | `eslint/react.mjs` | `baseConfig` + `eslint-config-next` | `import { reactConfig } from '@post-code-labs/dev-config/eslint/react'` |
 | `python/ruff.toml` | Shared ruff lint/format baseline | `extend = ".../ruff.toml"` |
 | `python/mypy.ini` | Shared mypy strict baseline | `extend` / merge keys |
+| `python/.sqlfluff` | Shared sqlfluff baseline (Postgres) | copy/mirror into the repo's `.sqlfluff` — sqlfluff has no `extends` |
+| `markdown/base.jsonc` | Shared markdownlint base (structure; Prettier owns formatting) | `"extends"` it from `.markdownlint.jsonc` |
 | `versions.json` | Pinned toolchain versions | reference when wiring `devDependencies` |
 
 ## Locked decisions (2026-06)
@@ -51,7 +53,10 @@ documented override seam, not a project's full config), and the outputs stay
 - **Package manager:** pnpm everywhere.
 - **TypeScript target:** `ES2024`.
 - **ESLint base:** typescript-eslint `strictTypeChecked` + `stylisticTypeChecked`
-  + import ordering + complexity guardrails. No mandatory JSDoc.
+  + import ordering + complexity guardrails + `eqeqeq`/`no-console`. No `curly`
+  (eslint-config-prettier disables it), no mandatory JSDoc.
+- **Python:** ruff `E/F/I/UP/B/C901` + `SIM/C4/RET/RUF/PIE`; mypy `strict`.
+- **SQL / Markdown:** sqlfluff (Postgres); markdownlint for structure only (Prettier formats).
 - **Versioning:** CalVer git tags `YYYY.MM` (e.g. `2026.06`).
 
 ## Keeping quality high

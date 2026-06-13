@@ -1,0 +1,20 @@
+// markdownlint base, extended from a repo's .markdownlint.jsonc:
+//   { "extends": "./node_modules/@post-code-labs/dev-config/markdown/base.jsonc" }
+// Prettier owns formatting; markdownlint owns structure. Full-line comments only
+// (no trailing commas) so the smoke test can strip them and JSON.parse this.
+{
+  "default": true,
+  // Off: formatting Prettier owns.
+  "MD004": false,
+  "MD007": false,
+  "MD009": false,
+  "MD010": false,
+  "MD012": false,
+  "MD013": false,
+  "MD030": false,
+  "MD046": false,
+  "MD048": false,
+  // Allow inline HTML; duplicate headings ok across sibling sections.
+  "MD033": false,
+  "MD024": { "siblings_only": true }
+}
