@@ -1,0 +1,42 @@
+name: Release
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    name: Cut CalVer release
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+        with:
+          fetch-depth: 0
+
+      - name: Compute next CalVer version
+        id: ver
+        run: |
+          set -euo pipefail
+          # CalVer YYYY.MM; same-month re-release appends .N (1, 2, …).
+          ym="$(date -u +%Y.%m)"
+          if git tag -l | grep -qx "${ym}"; then
+            latest="$(git tag -l "${ym}.*" | sed "s/^${ym}\.//" | sort -n | tail -1)"
+            version="${ym}.$(( ${latest:-0} + 1 ))"
+          else
+            version="${ym}"
+          fi
+          echo "version=${version}" >>"$GITHUB_OUTPUT"
+          echo "Next release: ${version}"
+
+      - name: Create release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ steps.ver.outputs.version }}
+        run: gh release create "$VERSION" --target "$GITHUB_SHA" --title "$VERSION" --generate-notes
