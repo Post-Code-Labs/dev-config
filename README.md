@@ -46,6 +46,7 @@ documented override seam, not a project's full config), and the outputs stay
 | `python/.sqlfluff` | Shared sqlfluff baseline (Postgres) | copy/mirror into the repo's `.sqlfluff` — sqlfluff has no `extends` |
 | `markdown/base.jsonc` | Shared markdownlint base (structure; Prettier owns formatting) | `"extends"` it from `.markdownlint.jsonc` |
 | `versions.json` | Pinned toolchain versions | reference when wiring `devDependencies` |
+| `dependency-policy.yml` | Canonical aged-dependency policy (pnpm gate + Dependabot cooldown constants) | reference when setting each repo's `pnpm-workspace.yaml` / `.github/dependabot.yml` |
 
 ## Locked decisions (2026-06)
 
@@ -58,6 +59,12 @@ documented override seam, not a project's full config), and the outputs stay
 - **Python:** ruff `E/F/I/UP/B/C901` + `SIM/C4/RET/RUF/PIE`; mypy `strict`.
 - **SQL / Markdown:** sqlfluff (Postgres); markdownlint for structure only (Prettier formats).
 - **Versioning:** CalVer git tags `YYYY.MM` (e.g. `2026.06`).
+- **Dependency aging:** canonical constants live in `dependency-policy.yml`
+  (exported) — pnpm `minimumReleaseAge` 1440 (24h) install gate; Dependabot
+  `cooldown` minor/patch 7d, major 14d. Short gate / long cooldown is deliberate:
+  the gate doesn't exempt security fixes, the cooldown never touches them. The
+  `dependabot.yml`/pnpm-gate files live in each consuming repo (no reference
+  mechanism); this file is the value + rationale they align to.
 
 ## Keeping quality high
 
