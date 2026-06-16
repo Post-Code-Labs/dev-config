@@ -22,7 +22,8 @@
     "./python/mypy.ini": "./python/mypy.ini",
     "./python/.sqlfluff": "./python/.sqlfluff",
     "./markdown/base.jsonc": "./markdown/base.jsonc",
-    "./versions.json": "./versions.json"
+    "./versions.json": "./versions.json",
+    "./dependency-policy.yml": "./dependency-policy.yml"
   },
   "files": [
     "prettier",
@@ -30,7 +31,8 @@
     "eslint",
     "python",
     "markdown",
-    "versions.json"
+    "versions.json",
+    "dependency-policy.yml"
   ],
   "peerDependencies": {
     "eslint": "^10.4.0",

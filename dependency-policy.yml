@@ -1,0 +1,15 @@
+# Canonical values; apply by hand in each repo's pnpm-workspace.yaml and
+# .github/dependabot.yml (not auto-propagated).
+
+pnpm:
+  # Minutes. Does not exempt security fixes (unlike the cooldown) — keep short.
+  minimumReleaseAge: 1440 # 24h
+
+dependabot:
+  # Never applies to security-updates groups, so it can be long.
+  cooldown:
+    semver-major-days: 14
+    semver-minor-days: 7
+    semver-patch-days: 7
+    default-days: 7
+  githubActionsCooldownDays: 7
