@@ -14,8 +14,8 @@ jobs:
     steps:
       - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
       # pnpm version from package.json "packageManager".
-      - uses: Post-Code-Labs/ci-actions/setup-pnpm@46bbce064b2ab2e56b80c0580eee01794233eac7 # 2026.06.2
-      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+      - uses: Post-Code-Labs/ci-actions/setup-pnpm@cc8c722a6fb3adca173c5f506eec0bb3abefa4bc # 2026.06.5
+      - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6
         with:
           node-version: 24
           cache: pnpm
