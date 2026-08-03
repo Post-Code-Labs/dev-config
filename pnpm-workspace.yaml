@@ -6,16 +6,18 @@ allowBuilds:
 
 # Keep vulnerable transitives on patched releases when their parents' compatible ranges still
 # resolve older versions. Next remains a test dependency because eslint-config-next imports its
-# bundled Babel parser, and currently pins PostCSS 8.4.31 exactly.
+# bundled Babel parser. Its optional sharp range has not yet admitted the patched 0.35 line; sharp
+# is unused by this config test suite, so pin that transitive alongside Next's PostCSS override.
 overrides:
-  "brace-expansion@1": 1.1.18
-  "brace-expansion@5": 5.0.9
-  "next>postcss": 8.5.25
+  'brace-expansion@1': 1.1.18
+  'brace-expansion@5': 5.0.9
+  'next>postcss': 8.5.25
+  'next>sharp': 0.35.3
 
 # eslint-config-next supports ESLint 10, but three bundled plugins have not widened their peer
 # ranges beyond ESLint 9 yet. The ESLint 10 smoke suite exercises these exact integrations.
 peerDependencyRules:
   allowedVersions:
-    "eslint-plugin-import@2>eslint": "10"
-    "eslint-plugin-jsx-a11y@6>eslint": "10"
-    "eslint-plugin-react@7>eslint": "10"
+    'eslint-plugin-import@2>eslint': '10'
+    'eslint-plugin-jsx-a11y@6>eslint': '10'
+    'eslint-plugin-react@7>eslint': '10'

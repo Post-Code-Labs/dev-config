@@ -100,12 +100,12 @@ export function baseConfig({ tsconfigRootDir } = {}) {
     ...tseslint.configs.stylisticTypeChecked,
     {
       // Sole `import` definer, registered for all files so next's import/* rules
-      // resolve on non-TS files too; the import rules stay scoped to ts,tsx below.
+      // resolve on non-TS files too; the import rules stay scoped to the TS family below.
       name: 'dev-config/import-plugin',
       plugins: { import: importPlugin },
     },
     {
-      files: ['**/*.{ts,tsx}'],
+      files: ['**/*.{ts,tsx,mts,cts}'],
       languageOptions: {
         parserOptions: {
           projectService: true,
@@ -120,11 +120,18 @@ export function baseConfig({ tsconfigRootDir } = {}) {
       },
     },
     {
+      // Mixed JS/TS repos should not need to repeat this standard typescript-eslint escape hatch.
+      // JavaScript still receives core/React/import rules from other layers, but not typed TS rules.
+      ...tseslint.configs.disableTypeChecked,
+      name: 'dev-config/js-family-disable-type-checked',
+      files: ['**/*.{js,jsx,cjs,mjs}'],
+    },
+    {
       files: [
-        '**/*.test.{ts,tsx}',
-        '**/*.spec.{ts,tsx}',
-        '**/__tests__/**/*.{ts,tsx}',
-        'tests/**/*.{ts,tsx}',
+        '**/*.test.{ts,tsx,mts,cts}',
+        '**/*.spec.{ts,tsx,mts,cts}',
+        '**/__tests__/**/*.{ts,tsx,mts,cts}',
+        'tests/**/*.{ts,tsx,mts,cts}',
       ],
       rules: testRelaxations,
     },

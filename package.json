@@ -11,11 +11,13 @@
   },
   "scripts": {
     "test": "node --test 'test/**/*.test.mjs' && pnpm test:markdown",
-    "test:markdown": "markdownlint-cli2 --config markdown/base.jsonc test/fixtures/valid.md"
+    "test:markdown": "markdownlint-cli2 --config markdown/base.jsonc test/fixtures/valid.md",
+    "test:python": "ruff check --config python/ruff.toml test/fixtures/python && ruff format --config python/ruff.toml --check test/fixtures/python && mypy --config-file python/mypy.ini test/fixtures/python && sqlfluff lint --config python/.sqlfluff test/fixtures/sql"
   },
   "exports": {
     "./prettier": "./prettier/index.json",
     "./typescript/tsconfig.base.json": "./typescript/tsconfig.base.json",
+    "./typescript/tsconfig.node.json": "./typescript/tsconfig.node.json",
     "./typescript/tsconfig.react.json": "./typescript/tsconfig.react.json",
     "./eslint/base": "./eslint/base.mjs",
     "./eslint/react": "./eslint/react.mjs",
@@ -36,13 +38,13 @@
     "dependency-policy.yml"
   ],
   "peerDependencies": {
-    "eslint": "^10.4.0",
-    "eslint-config-next": ">=16.2.7",
-    "eslint-config-prettier": ">=10.1.0",
-    "eslint-plugin-import-x": ">=4.16.0",
-    "prettier": ">=3.8.0",
-    "typescript": ">=6.0.0",
-    "typescript-eslint": ">=8.60.0"
+    "eslint": "^10.8.0",
+    "eslint-config-next": "^16.2.12",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-import-x": "^4.17.1",
+    "prettier": "^3.9.6",
+    "typescript": "~6.0.3",
+    "typescript-eslint": "^8.65.0"
   },
   "peerDependenciesMeta": {
     "eslint-config-next": {

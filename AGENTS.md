@@ -19,13 +19,14 @@ Add an artifact only if **all** hold — otherwise it stays in the consuming rep
    behavior a tool can verify, so "in sync" is provable.
 4. **A stable, versioned contract** — clear import path, shipped under a tag.
 
-Exception to (1): the Python tree's ruff/mypy/sqlfluff have no reference mechanism,
-so they're mirrored by copy and kept in sync.
+Exception to (1): mypy and sqlfluff have no suitable config-inheritance mechanism,
+so those two files are mirrored by copy and kept in sync. Ruff is consumed by
+its native `extend` mechanism.
 
 Explicitly out of scope: one-time scaffold (AGENTS.md content, CODEOWNERS,
 dependabot, lefthook, PR templates). Those belong in a template repo, not here —
-don't reintroduce them. (The dependency-*aging policy* — the canonical pnpm gate
-+ Dependabot cooldown values — ships as the exported `dependency-policy.yml`
+don't reintroduce them. (The dependency-aging policy — the canonical pnpm gate
+and Dependabot cooldown values — ships as the exported `dependency-policy.yml`
 constants file; only the `dependabot.yml`/pnpm-gate artifacts themselves stay out.)
 
 ## Keeping quality high
