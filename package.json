@@ -5,12 +5,13 @@
   "license": "Apache-2.0",
   "private": true,
   "type": "module",
-  "packageManager": "pnpm@11.3.0",
+  "packageManager": "pnpm@11.18.0",
   "engines": {
     "node": ">=24"
   },
   "scripts": {
-    "test": "node --test 'test/**/*.test.mjs'"
+    "test": "node --test 'test/**/*.test.mjs' && pnpm test:markdown",
+    "test:markdown": "markdownlint-cli2 --config markdown/base.jsonc test/fixtures/valid.md"
   },
   "exports": {
     "./prettier": "./prettier/index.json",
@@ -50,14 +51,16 @@
   },
   "devDependencies": {
     "@types/react": "^19.0.0",
-    "eslint": "10.5.0",
-    "eslint-config-next": "16.2.9",
+    "eslint": "10.8.0",
+    "eslint-config-next": "16.2.12",
     "eslint-config-prettier": "10.1.8",
-    "eslint-plugin-import-x": "4.16.2",
-    "next": "^16.2.9",
-    "prettier": "3.8.4",
+    "eslint-plugin-import-x": "4.17.1",
+    "markdownlint-cli2": "0.23.2",
+    "next": "16.2.12",
+    "prettier": "3.9.6",
     "react": "^19.0.0",
+    "react-dom": "19.2.7",
     "typescript": "6.0.3",
-    "typescript-eslint": "8.60.1"
+    "typescript-eslint": "8.65.0"
   }
 }
