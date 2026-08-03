@@ -3,23 +3,26 @@
 Single source of truth for the **importable baseline configs** shared across
 consuming repos: linting, formatting, type-check, Python, SQL, and Markdown tooling.
 
-Everything here is a **required, live import**: a consumer `extends`/`import`s
-these out of `node_modules` (pinned to a tag), so a change here ripples to every
-consumer on the next install.
+The Prettier, TypeScript, ESLint, Ruff, and Markdown configs are **required, live
+references**: a consumer `extends`/`import`s them from `node_modules` (pinned to a
+tag), so a change here ripples to every consumer on the next install. Mypy and
+SQLFluff are versioned mirrors because they lack a suitable config-inheritance
+mechanism; `dependency-policy.yml` is a manually applied constants contract.
 
 Published as-is for our own consumption under the Apache-2.0 license. Not seeking
 external contributions or support — Issues are off, and PRs aren't monitored.
 
 ## What qualifies to live here
 
-An artifact belongs in this repo only if **all** of the following hold. If any
-fails, it stays in the consuming repo (or, for one-time scaffold, a separate
-template repo) — not here.
+An artifact belongs in this repo only if **all** of the following hold, except
+for the explicitly documented mirror/constants contracts above. If any fails,
+it stays in the consuming repo (or, for one-time scaffold, a separate template
+repo) — not here.
 
 1. **Consumed by reference, not by copy.** It is `extends`/`import`-ed from the
    package, so a single edit propagates on install. If the only way to adopt it
    is to copy a file, it does not qualify.
-2. **Universally correct.** The rule is right for *every* consumer, not one
+2. **Universally correct.** The rule is right for _every_ consumer, not one
    project's local taste. Anything that needs per-repo divergence to be correct
    is exposed as an overridable base — never hard-coded here.
 3. **Behavior-defining and mechanically checkable.** It sets lint / format /
@@ -34,28 +37,29 @@ documented override seam, not a project's full config), and the outputs stay
 
 ## What's here
 
-| Path | What it is | How a repo consumes it |
-| --- | --- | --- |
-| `prettier/index.json` | Canonical Prettier config | `"prettier": "@post-code-labs/dev-config/prettier"` in `package.json` |
-| `typescript/tsconfig.base.json` | Base strict TS config (Node) | `"extends": "@post-code-labs/dev-config/typescript/tsconfig.base.json"` |
-| `typescript/tsconfig.react.json` | Base + DOM/JSX for Next.js apps | `extends` as above |
-| `eslint/base.mjs` | Flat ESLint preset (strict type-checked + stylistic + import + complexity) | `import { baseConfig } from '@post-code-labs/dev-config/eslint/base'` |
-| `eslint/react.mjs` | `baseConfig` + `eslint-config-next` | `import { reactConfig } from '@post-code-labs/dev-config/eslint/react'` |
-| `python/ruff.toml` | Shared ruff lint/format baseline | `extend = ".../ruff.toml"` |
-| `python/mypy.ini` | Shared mypy strict baseline | `extend` / merge keys |
-| `python/.sqlfluff` | Shared sqlfluff baseline (Postgres) | copy/mirror into the repo's `.sqlfluff` — sqlfluff has no `extends` |
-| `markdown/base.jsonc` | Shared markdownlint base (structure; Prettier owns formatting) | `"extends"` it from `.markdownlint.jsonc` |
-| `versions.json` | Pinned toolchain versions | reference when wiring `devDependencies` |
-| `dependency-policy.yml` | Canonical aged-dependency policy (pnpm gate + Dependabot cooldown constants) | reference when setting each repo's `pnpm-workspace.yaml` / `.github/dependabot.yml` |
+| Path                             | What it is                                                                   | How a repo consumes it                                                              |
+| -------------------------------- | ---------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
+| `prettier/index.json`            | Canonical Prettier config                                                    | `"prettier": "@post-code-labs/dev-config/prettier"` in `package.json`               |
+| `typescript/tsconfig.base.json`  | Strict TS baseline for bundled output                                        | `"extends": "@post-code-labs/dev-config/typescript/tsconfig.base.json"`             |
+| `typescript/tsconfig.node.json`  | Base + NodeNext module semantics for Node runtimes                           | `"extends": "@post-code-labs/dev-config/typescript/tsconfig.node.json"`             |
+| `typescript/tsconfig.react.json` | Base + DOM/JSX for Next.js apps                                              | `extends` as above                                                                  |
+| `eslint/base.mjs`                | Flat ESLint preset (strict type-checked + stylistic + import + complexity)   | `import { baseConfig } from '@post-code-labs/dev-config/eslint/base'`               |
+| `eslint/react.mjs`               | `baseConfig` + `eslint-config-next`                                          | `import { reactConfig } from '@post-code-labs/dev-config/eslint/react'`             |
+| `python/ruff.toml`               | Shared ruff lint/format baseline                                             | `extend = ".../ruff.toml"`                                                          |
+| `python/mypy.ini`                | Shared mypy strict baseline                                                  | copy/mirror its keys into the repo's mypy config                                    |
+| `python/.sqlfluff`               | Shared sqlfluff baseline (Postgres)                                          | copy/mirror into the repo's `.sqlfluff` — sqlfluff has no `extends`                 |
+| `markdown/base.jsonc`            | Shared markdownlint base (structure; Prettier owns formatting)               | `"extends"` it from `.markdownlint.jsonc`                                           |
+| `versions.json`                  | Pinned toolchain versions                                                    | reference when wiring `devDependencies`                                             |
+| `dependency-policy.yml`          | Canonical aged-dependency policy (pnpm gate + Dependabot cooldown constants) | reference when setting each repo's `pnpm-workspace.yaml` / `.github/dependabot.yml` |
 
-## Locked decisions (2026-06)
+## Locked decisions (2026-08)
 
 - **Prettier:** `semi: true, singleQuote: true, trailingComma: all, printWidth: 100, tabWidth: 2`.
 - **Package manager:** pnpm everywhere.
 - **TypeScript target:** `ES2024`.
 - **ESLint base:** typescript-eslint `strictTypeChecked` + `stylisticTypeChecked`
-  + import ordering + complexity guardrails + `eqeqeq`/`no-console`. No `curly`
-  (eslint-config-prettier disables it), no mandatory JSDoc.
+  - import ordering + complexity guardrails + `eqeqeq`/`no-console`. No `curly`
+    (eslint-config-prettier disables it), no mandatory JSDoc.
 - **Python:** ruff `E/F/I/UP/B/C901` + `SIM/C4/RET/RUF/PIE`; mypy `strict`.
 - **SQL / Markdown:** sqlfluff (Postgres); markdownlint for structure only (Prettier formats).
 - **Versioning:** CalVer git tags `YYYY.MM` (e.g. `2026.06`).
@@ -65,6 +69,19 @@ documented override seam, not a project's full config), and the outputs stay
   the gate doesn't exempt security fixes, the cooldown never touches them. The
   `dependabot.yml`/pnpm-gate files live in each consuming repo (no reference
   mechanism); this file is the value + rationale they align to.
+
+### 2026.08 adoption notes
+
+- `tsconfig.base.json` keeps its existing bundler resolution behavior and is now
+  documented accurately. Unbundled Node applications should adopt the additive
+  `tsconfig.node.json` export for NodeNext resolution.
+- `tsconfig.react.json` no longer exposes APIs newer than the locked ES2024
+  runtime contract through an additional `ESNext` lib.
+- ESLint's shared TypeScript rules now cover `.mts` and `.cts`; mixed JavaScript
+  files automatically disable typed TypeScript rules while retaining applicable
+  core, import, and framework rules.
+- Peer ranges are bounded to the verified toolchain majors (and TypeScript 6.0.x)
+  instead of claiming compatibility with unknown future breaking releases.
 
 ## Keeping quality high
 
@@ -104,8 +121,8 @@ git tag, so the `package.json` `version` field is not the contract — the tag i
 // package.json
 {
   "devDependencies": {
-    "@post-code-labs/dev-config": "github:Post-Code-Labs/dev-config#2026.06.1"
-  }
+    "@post-code-labs/dev-config": "github:Post-Code-Labs/dev-config#2026.06.1",
+  },
 }
 ```
 
@@ -120,6 +137,8 @@ Then wire each config by reference:
 // tsconfig.json
 { "extends": "@post-code-labs/dev-config/typescript/tsconfig.base.json" }
 ```
+
+Use `typescript/tsconfig.node.json` instead for code executed directly by Node.
 
 ```js
 // eslint.config.mjs
