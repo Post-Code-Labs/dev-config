@@ -11,7 +11,7 @@
   },
   "scripts": {
     "test": "node --test 'test/**/*.test.mjs' && pnpm test:markdown",
-    "test:markdown": "markdownlint-cli2 --config markdown/base.jsonc test/fixtures/valid.md",
+    "test:markdown": "markdownlint-cli2 --config markdown/base.jsonc test/fixtures/valid.md && markdownlint-cli2 --config test/fixtures/agents-rule.markdownlint-cli2.jsonc AGENTS.md",
     "test:python": "ruff check --config python/ruff.toml test/fixtures/python && ruff format --config python/ruff.toml --check test/fixtures/python && mypy --config-file python/mypy.ini test/fixtures/python && sqlfluff lint --config python/.sqlfluff test/fixtures/sql"
   },
   "exports": {
@@ -25,6 +25,7 @@
     "./python/mypy.ini": "./python/mypy.ini",
     "./python/.sqlfluff": "./python/.sqlfluff",
     "./markdown/base.jsonc": "./markdown/base.jsonc",
+    "./markdown/rules/agents-max-lines": "./markdown/rules/agents-max-lines.mjs",
     "./versions.json": "./versions.json",
     "./dependency-policy.yml": "./dependency-policy.yml"
   },
