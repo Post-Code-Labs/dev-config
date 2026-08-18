@@ -1,7 +1,0 @@
-{
-  "customRules": ["../../markdown/rules/agents-max-lines.mjs"],
-  "config": {
-    "default": false,
-    "agents-max-lines": true,
-  },
-}

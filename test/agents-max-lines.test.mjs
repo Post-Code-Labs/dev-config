@@ -28,7 +28,7 @@ test('allows 250 lines and reports the first excess line by default', () => {
 
 test('checks nested AGENTS.md files but ignores other Markdown files', () => {
   assert.equal(runRule({ name: 'packages/models/AGENTS.md', lineCount: 251 }).length, 1);
-  assert.deepEqual(runRule({ name: 'README.md', lineCount: 251 }), []);
+  assert.deepEqual(runRule({ name: 'CONTRIBUTING.md', lineCount: 251 }), []);
 });
 
 test('supports a positive-integer maximum override', () => {
@@ -40,20 +40,27 @@ test('supports a positive-integer maximum override', () => {
   );
 });
 
-test('can ignore empty and whitespace-only lines', () => {
+test('ignores empty and whitespace-only lines by default', () => {
   const lines = ['one', '', '  ', 'two', 'three', '\t', 'four'];
-  assert.deepEqual(
-    runRule({
-      lines: lines.slice(0, 6),
-      config: { maximum: 3, ignore_blank_lines: true },
-    }),
-    [],
-  );
-  assert.deepEqual(runRule({ lines, config: { maximum: 3, ignore_blank_lines: true } }), [
+  assert.deepEqual(runRule({ lines: lines.slice(0, 6), config: { maximum: 3 } }), []);
+  assert.deepEqual(runRule({ lines, config: { maximum: 3 } }), [
     {
       lineNumber: 7,
       detail: 'Expected at most 3 lines, found 4.',
     },
   ]);
-  assert.equal(runRule({ lines, config: { maximum: 3 } }).length, 1);
+});
+
+test('can count blank lines when ignore_blank_lines is disabled', () => {
+  const lines = ['one', '', '  ', 'two', 'three', '\t', 'four'];
+  assert.deepEqual(runRule({ lines, config: { maximum: 3, ignore_blank_lines: false } }), [
+    {
+      lineNumber: 4,
+      detail: 'Expected at most 3 lines, found 7.',
+    },
+  ]);
+  assert.throws(
+    () => runRule({ lines, config: { ignore_blank_lines: 'yes' } }),
+    /ignore_blank_lines must be a boolean/u,
+  );
 });
