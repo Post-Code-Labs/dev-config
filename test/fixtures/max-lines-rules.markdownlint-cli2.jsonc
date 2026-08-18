@@ -1,0 +1,11 @@
+{
+  "customRules": [
+    "../../markdown/rules/agents-max-lines.mjs",
+    "../../markdown/rules/readme-max-lines.mjs",
+  ],
+  "config": {
+    "default": false,
+    "agents-max-lines": true,
+    "readme-max-lines": true,
+  },
+}

@@ -37,21 +37,23 @@ documented override seam, not a project's full config), and the outputs stay
 
 ## What's here
 
-| Path                                  | What it is                                                                   | How a repo consumes it                                                              |
-| ------------------------------------- | ---------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
-| `prettier/index.json`                 | Canonical Prettier config                                                    | `"prettier": "@post-code-labs/dev-config/prettier"` in `package.json`               |
-| `typescript/tsconfig.base.json`       | Strict TS baseline for bundled output                                        | `"extends": "@post-code-labs/dev-config/typescript/tsconfig.base.json"`             |
-| `typescript/tsconfig.node.json`       | Base + NodeNext module semantics for Node runtimes                           | `"extends": "@post-code-labs/dev-config/typescript/tsconfig.node.json"`             |
-| `typescript/tsconfig.react.json`      | Base + DOM/JSX for Next.js apps                                              | `extends` as above                                                                  |
-| `eslint/base.mjs`                     | Flat ESLint preset (strict type-checked + stylistic + import + complexity)   | `import { baseConfig } from '@post-code-labs/dev-config/eslint/base'`               |
-| `eslint/react.mjs`                    | `baseConfig` + `eslint-config-next`                                          | `import { reactConfig } from '@post-code-labs/dev-config/eslint/react'`             |
-| `python/ruff.toml`                    | Shared ruff lint/format baseline                                             | `extend = ".../ruff.toml"`                                                          |
-| `python/mypy.ini`                     | Shared mypy strict baseline                                                  | copy/mirror its keys into the repo's mypy config                                    |
-| `python/.sqlfluff`                    | Shared sqlfluff baseline (Postgres)                                          | copy/mirror into the repo's `.sqlfluff` — sqlfluff has no `extends`                 |
-| `markdown/base.jsonc`                 | Shared markdownlint base (structure; Prettier owns formatting)               | `"extends"` it from `.markdownlint.jsonc`                                           |
-| `markdown/rules/agents-max-lines.mjs` | Custom 250-line maximum for `AGENTS.md` files                                | Load its package export through markdownlint-cli2 `customRules`                     |
-| `versions.json`                       | Pinned toolchain versions                                                    | reference when wiring `devDependencies`                                             |
-| `dependency-policy.yml`               | Canonical aged-dependency policy (pnpm gate + Dependabot cooldown constants) | reference when setting each repo's `pnpm-workspace.yaml` / `.github/dependabot.yml` |
+| Path                                       | What it is                                                                   | How a repo consumes it                                                                                 |
+| ------------------------------------------ | ---------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
+| `prettier/index.json`                      | Canonical Prettier config                                                    | `"prettier": "@post-code-labs/dev-config/prettier"` in `package.json`                                  |
+| `typescript/tsconfig.base.json`            | Strict TS baseline for bundled output                                        | `"extends": "@post-code-labs/dev-config/typescript/tsconfig.base.json"`                                |
+| `typescript/tsconfig.node.json`            | Base + NodeNext module semantics for Node runtimes                           | `"extends": "@post-code-labs/dev-config/typescript/tsconfig.node.json"`                                |
+| `typescript/tsconfig.react.json`           | Base + DOM/JSX for Next.js apps                                              | `extends` as above                                                                                     |
+| `eslint/base.mjs`                          | Flat ESLint preset (strict type-checked + stylistic + import + complexity)   | `import { baseConfig } from '@post-code-labs/dev-config/eslint/base'`                                  |
+| `eslint/react.mjs`                         | `baseConfig` + `eslint-config-next`                                          | `import { reactConfig } from '@post-code-labs/dev-config/eslint/react'`                                |
+| `python/ruff.toml`                         | Shared ruff lint/format baseline                                             | `extend = ".../ruff.toml"`                                                                             |
+| `python/mypy.ini`                          | Shared mypy strict baseline                                                  | copy/mirror its keys into the repo's mypy config                                                       |
+| `python/.sqlfluff`                         | Shared sqlfluff baseline (Postgres)                                          | copy/mirror into the repo's `.sqlfluff` — sqlfluff has no `extends`                                    |
+| `markdown/base.jsonc`                      | Shared markdownlint base (structure; Prettier owns formatting)               | `"extends"` it from `.markdownlint.jsonc`                                                              |
+| `markdown/rules/create-max-lines-rule.mjs` | Factory for line-limit rules scoped to any file pattern                      | `import { createMaxLinesRule } from '@post-code-labs/dev-config/markdown/rules/create-max-lines-rule'` |
+| `markdown/rules/agents-max-lines.mjs`      | Custom 250-line maximum for `AGENTS.md` files                                | Load its package export through markdownlint-cli2 `customRules`                                        |
+| `markdown/rules/readme-max-lines.mjs`      | Custom 300-line maximum for `README.md` files                                | Load its package export through markdownlint-cli2 `customRules`                                        |
+| `versions.json`                            | Pinned toolchain versions                                                    | reference when wiring `devDependencies`                                                                |
+| `dependency-policy.yml`                    | Canonical aged-dependency policy (pnpm gate + Dependabot cooldown constants) | reference when setting each repo's `pnpm-workspace.yaml` / `.github/dependabot.yml`                    |
 
 ## Locked decisions (2026-08)
 
